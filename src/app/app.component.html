@@ -1,11 +1,10 @@
 <app-header></app-header>
 <main>
     <ul>
-        <li><app-user [user]="users[0]" (select)="onSelectUser($event)"></app-user></li>
-        <li><app-user [user]="users[1]" (select)="onSelectUser($event)"></app-user></li>
-        <li><app-user [user]="users[2]" (select)="onSelectUser($event)"></app-user></li>
-        <li><app-user [user]="users[3]" (select)="onSelectUser($event)"></app-user></li>
+        <li *ngFor="let user of users"><app-user [user]="user" (select)="onSelectUser($event)"></app-user></li>
     </ul>
-
-    <app-tasks [user]="selectedUser"></app-tasks>
+    <app-tasks *ngIf="selectedUser; else fallback" [user]="selectedUser"></app-tasks>
+    <ng-template #fallback>
+        <p>No user selected yet</p>
+    </ng-template>
 </main>
