@@ -1,13 +1,14 @@
+<app-new-task *ngIf="isAddingTask" (cancel)="onCancelDialog()" (add)="onAddTask($event)"></app-new-task>
 <section id ='tasks'>
     <header>
         <h2>{{ user()?.name }}</h2>
     </header>
     <menu>
-        <button>Add Task</button>
+        <button (click)="onStartAddTask()">Add Task</button>
     </menu>
     <ul>
         <li *ngFor="let task of selectedUserTasks">
-            <app-task></app-task>
+            <app-task [task]="task" (complete)="onCompleteTask($event)"></app-task>
         </li>
     </ul>
 </section>
