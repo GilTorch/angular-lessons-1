@@ -1,4 +1,6 @@
-<app-new-task *ngIf="isAddingTask" (cancel)="onCancelDialog()" (add)="onAddTask($event)"></app-new-task>
+@if(isAddingTask){
+    <app-new-task [userId]="user()!.id" (close)="onCancelDialog()"></app-new-task>
+}
 <section id ='tasks'>
     <header>
         <h2>{{ user()?.name }}</h2>
