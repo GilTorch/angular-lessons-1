@@ -20,14 +20,10 @@ export class TasksComponent {
 
 
    constructor(private taskService: TaskService){
-    this.tasks = this.taskService.tasks
+    this.tasks = this.taskService.tasks()
    }
    get selectedUserTasks(){
     return this.tasks.filter((task) => task.userId === this.user()?.id)
-   }
-
-   onCompleteTask(id: string){
-     this.tasks = this.tasks.filter(t => t.id !== id);
    }
 
    onStartAddTask(){
@@ -39,13 +35,11 @@ export class TasksComponent {
    }
 
    onAddTask(taskData: NewTaskData){
-    this.tasks.push({
-      id: new Date().getTime().toString(),
+    this.taskService.addTask({
       title: taskData.title,
-      userId: this.user()?.id || 'u1',
       summary: taskData.summary,
-      dueDate: taskData.date
-    })
+      date: taskData.date
+    },this.user()!.id)
     this.isAddingTask = false
    }
 }

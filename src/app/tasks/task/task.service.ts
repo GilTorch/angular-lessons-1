@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable, WritableSignal, signal } from "@angular/core";
 import { User } from "../../user/user.model";
 import { NewTaskData, Task } from "./task.model";
 
@@ -7,7 +7,7 @@ import { NewTaskData, Task } from "./task.model";
     providedIn: 'root'
 })
 export class TaskService {
-    tasks: Task[] = [
+    tasks: WritableSignal<Task[]> = signal([
       {
         id: 't1',
         userId: 'u1',
@@ -31,23 +31,27 @@ export class TaskService {
           'Prepare and describe an issue template which will help with project management',
         dueDate: '2024-06-15',
       },
-    ]
+    ])
     
     getUserTasks(userId: string){
-    return this.tasks.filter((task) => task.userId === userId)
+    return this.tasks().filter((task) => task.userId === userId)
    }
 
       addTask(taskData: NewTaskData, userId: string){
-       this.tasks.push({
-         id: new Date().getTime().toString(),
-         title: taskData.title,
-         userId: userId,
-         summary: taskData.summary,
-         dueDate: taskData.date
-       })
+       this.tasks.set(
+        [
+            ...this.tasks(),
+            {
+            id: new Date().getTime().toString(),
+            title: taskData.title,
+            userId: userId,
+            summary: taskData.summary,
+            dueDate: taskData.date
+            }
+        ])
       }
 
     removeTask(id: string){
-        this.tasks = this.tasks.filter(t => t.id !== id);
+        this.tasks.set(this.tasks().filter(t => t.id !== id));
     }
 }
