@@ -13,7 +13,6 @@ import { TaskService } from './task.service';
 })
 export class TaskComponent {
   @Input({ required: true}) task!: Task
-  @Output() complete = new EventEmitter<string>();
 
   constructor(private taskService: TaskService){
 

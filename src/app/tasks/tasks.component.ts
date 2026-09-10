@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, signal, WritableSignal } from '@angular/core';
 import { User } from '../user/user.model';
 import { TaskComponent } from './task/task.component';
 import { NgFor, NgIf } from '@angular/common';
@@ -15,15 +15,15 @@ import { TaskService } from './task/task.service';
 })
 export class TasksComponent {
    user = input<User>()
-   tasks: Task[] = []
+   tasks: WritableSignal<Task[]> = signal([])
    isAddingTask = false;
 
 
    constructor(private taskService: TaskService){
-    this.tasks = this.taskService.tasks()
+    this.tasks = this.taskService.tasks
    }
    get selectedUserTasks(){
-    return this.tasks.filter((task) => task.userId === this.user()?.id)
+    return this.tasks().filter((task) => task.userId === this.user()?.id)
    }
 
    onStartAddTask(){
